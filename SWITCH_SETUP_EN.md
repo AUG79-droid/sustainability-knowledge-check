@@ -10,6 +10,7 @@
 - **Audience:** Airbus Defence and Space employees; introductory to intermediate level
 - **Learning objective:** Apply evidence-based sustainability reasoning to realistic operational, industrial and value-chain decisions.
 - **Image:** `Sustainability_Knowledge_Check_Switch_1200x675.jpg`
+- **Visual identity:** Premium evidence-review dossier in graphite, ivory, copper and technical green; no course-module grid, radar or mission-console styling.
 - **Target URL after publication:** `https://aug79-droid.github.io/sustainability-knowledge-check/`
 
 ## Relationship to the other applications
@@ -22,4 +23,3 @@
 ## Educational notice
 
 Exploratory learning content. It does not replace controlled policies, procedures, legal advice, technical authorisation, targets or corporate positions.
-

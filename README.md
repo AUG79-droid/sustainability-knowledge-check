@@ -2,6 +2,8 @@
 
 Independent English-language diagnostic application for sustainability decisions in Airbus Defence and Space contexts.
 
+Version 4.0 uses a premium **evidence-review** identity. The interface is built around a layered sustainability dossier, material evidence and a refined editorial report, keeping the application visually distinct from both Sustainable Aviation Foundations and the dark radar/mission-console language used by Airpower Mission Green 2026.
+
 ## Learning design
 
 - 15–20 minute balanced diagnostic.
@@ -13,6 +15,7 @@ Independent English-language diagnostic application for sustainability decisions
 - Overall result, score by area and links to the relevant Sustainable Aviation Foundations modules.
 - Downloadable personal learning plan.
 - Browser-only progress; no account or data submission.
+- Rich evidence-dossier interface without module grids, radar charts or mission-control styling.
 
 ## Run
 
@@ -33,4 +36,3 @@ Upload the contents of this folder at repository root and publish GitHub Pages f
 ## Guardrails
 
 This is exploratory learning content. It does not replace controlled policies, procedures, legal advice, technical authorisation, targets or corporate positions. Internal approved documentation remains authoritative for Airbus work.
-

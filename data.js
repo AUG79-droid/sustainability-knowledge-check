@@ -4,7 +4,7 @@ window.SKC_DATA = {
     context: "Airbus Defence and Space",
     duration: "15–20 minutes",
     reviewed: "22 July 2026",
-    version: "1.0",
+    version: "4.0",
     foundationsUrl: "https://aug79-droid.github.io/sustainable-aviation-foundations/"
   },
 

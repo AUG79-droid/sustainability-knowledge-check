@@ -1,4 +1,4 @@
-# Sustainability Knowledge Check · v1.0 validation
+# Sustainability Knowledge Check · v4.0 validation
 
 Validated 22 July 2026.
 
@@ -27,11 +27,16 @@ Validated 22 July 2026.
 
 ## Visual and accessibility checks
 
+- The home experience uses a premium evidence-review dossier with a project-specific editorial image, layered information, material detail and a six-area assessment spectrum.
+- It does not reuse the Foundations hero layout, course-module card grid or long-form learning architecture.
+- It contains no radar, reticle, mission-system panel, dark command-console grid or technical targeting language associated with Airpower Mission Green 2026.
+- Question screens use an evidence-dossier sidebar, restrained area accents and a dedicated decision sheet.
+- Results use an editorial report, a prominent score ticket, six performance bars and a focused learning plan.
 - Chromium desktop: home, question, feedback, results and evidence base reviewed.
 - Chromium mobile at 390 × 844: home and question reviewed.
 - No horizontal overflow or console errors detected.
 - Semantic buttons, visible keyboard focus, skip link, responsive layout and reduced-motion support included.
-- All production images load locally; the app has no runtime dependency on external fonts or image services.
+- All fonts and images are local; the app has no runtime dependency on external font or image services.
 
 ## Content guardrails
 
@@ -40,4 +45,3 @@ Validated 22 July 2026.
 - Scenarios use fictional composite learning situations.
 - Questions show operational, technical, quality and resilience constraints alongside environmental effects.
 - Educational notice states that the app does not replace controlled policy, procedures, legal advice, technical authorisation, targets or corporate positions.
-

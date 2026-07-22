@@ -66,6 +66,7 @@
 
   function setPage(title, activeNav = null, resetScroll = true) {
     document.title = title ? `${title} · ${DATA.meta.title}` : DATA.meta.title;
+    document.body.dataset.view = activeNav || (title === "Results" ? "results" : "assessment");
     document.querySelectorAll("[data-nav]").forEach((link) => {
       const active = link.dataset.nav === activeNav;
       link.classList.toggle("active", active);
@@ -141,74 +142,73 @@
     return Math.round(answered.reduce((sum, answer) => sum + answer.earned, 0) / answered.length * 100);
   }
 
-  function homeAreaCards() {
-    return DATA.areas.map((area) => `
-      <article class="area-card" style="--area:${esc(area.colour)}">
-        <img src="${esc(area.image)}" alt="">
-        <div class="area-card-copy">
-          <div class="area-card-top"><span class="area-card-code">AREA ${esc(area.code)}</span><span class="area-dot" aria-hidden="true"></span></div>
-          <h3>${esc(area.title)}</h3>
-          <p>${esc(area.description)}</p>
-        </div>
-      </article>`).join("");
-  }
-
   function renderHome() {
     const inProgress = state.selectedIds.length === 18 && !state.finished && Object.keys(state.answers).length < 18;
     const completed = state.lastResult;
     app.innerHTML = `
-      <section class="home-hero">
-        <img class="home-hero-media" src="assets/hero-a400m-eurofighter.jpg" alt="A Defence and Space industrial learning scene with an A400M, a fighter aircraft and a multidisciplinary team">
-        <div class="home-hero-inner">
-          <div class="home-copy">
-            <div class="eyebrow light">Airbus Defence and Space context · English master</div>
-            <h1>How strong is your <span>sustainability decision lens?</span></h1>
-            <p>Test how you interpret evidence, lifecycle trade-offs and operational constraints—not how well you remember environmental vocabulary.</p>
-            <div class="meta-row">
-              <span class="meta-chip">18 balanced questions</span>
-              <span class="meta-chip">6 decision areas</span>
-              <span class="meta-chip">15–20 minutes</span>
-              <span class="meta-chip">Immediate feedback</span>
-            </div>
-            <div class="button-row">
-              ${inProgress ? `<button class="btn btn-primary" type="button" data-action="resume">Resume question ${state.index + 1} →</button><button class="btn btn-secondary" type="button" data-action="restart">Start a new attempt</button>` : `<button class="btn btn-primary" type="button" data-action="start">Start knowledge check →</button><a class="btn btn-secondary" href="#about">See how it works</a>`}
-              ${completed ? `<button class="btn btn-secondary" type="button" data-action="last-results">View last result · ${completed.overall}%</button>` : ""}
-            </div>
+      <section class="review-home">
+        <div class="review-frame shell">
+          <div class="review-context-row">
+            <span>Applied sustainability · knowledge review</span>
+            <span><i aria-hidden="true"></i> Airbus Defence and Space context</span>
           </div>
-          <aside class="diagnostic-card" aria-label="Six diagnostic areas">
-            <div class="diagnostic-card-head"><strong>Your diagnostic map</strong><span>3 questions per area</span></div>
-            <div class="diagnostic-grid">
-              ${DATA.areas.map((area) => `<div class="diagnostic-domain" style="--area:${esc(area.colour)}"><span>${esc(area.code)}</span><strong>${esc(area.short)}</strong></div>`).join("")}
+
+          <div class="review-hero">
+            <div class="review-copy">
+              <div class="eyebrow">Sustainability knowledge check</div>
+              <h1>Good decisions need more than <em>good intentions.</em></h1>
+              <p>Work through 18 realistic choices. Examine the evidence, lifecycle trade-offs and operational constraints—then discover where your reasoning is strongest.</p>
+              <div class="button-row review-actions">
+                ${inProgress ? `<button class="btn btn-primary" type="button" data-action="resume">Resume question ${state.index + 1} <span>→</span></button><button class="btn btn-quiet" type="button" data-action="restart">Start again</button>` : `<button class="btn btn-primary" type="button" data-action="start">Begin the review <span>→</span></button><a class="btn btn-quiet" href="#about">How it works</a>`}
+                ${completed ? `<button class="btn btn-quiet" type="button" data-action="last-results">Last result · ${completed.overall}%</button>` : ""}
+              </div>
+              <div class="review-facts" aria-label="Assessment details">
+                <div><strong>18</strong><span>evidence-based scenarios</span></div>
+                <div><strong>15–20</strong><span>minutes to complete</span></div>
+                <div><strong>Private</strong><span>nothing is submitted</span></div>
+              </div>
             </div>
-            <p class="privacy-note">No sign-in. No answers are submitted. Progress and results stay in this browser.</p>
+
+            <aside class="dossier-stage" aria-label="A sustainability evidence dossier under review">
+              <img src="assets/hero-evidence-dossier-v4.jpg" alt="A layered evidence dossier with aerospace materials, environmental maps and performance data being reviewed.">
+              <div class="dossier-shade" aria-hidden="true"></div>
+              <div class="dossier-label"><span>Evidence dossier</span><strong>Review before conclusion</strong><small>Boundary · function · data · trade-off</small></div>
+              <div class="dossier-seal" aria-hidden="true"><span>SKC</span><b>01</b></div>
+              <div class="dossier-index" aria-hidden="true"><span>Context</span><span>Evidence</span><span>Decision</span></div>
+            </aside>
+          </div>
+
+          <div class="assessment-spectrum" aria-label="Six assessment areas">
+            ${DATA.areas.map((area) => `<article style="--area:${esc(area.colour)}"><span>${esc(area.code)}</span><div><small>Assessment area</small><strong>${esc(area.short)}</strong></div></article>`).join("")}
+          </div>
+        </div>
+      </section>
+
+      <section class="review-method">
+        <div class="shell method-layout">
+          <div class="method-copy">
+            <div class="eyebrow">A decision review, not a memory test</div>
+            <h2>Look closer.<br><em>Then decide.</em></h2>
+            <p>The strongest answer is not always the option that sounds the greenest. Each scenario asks you to protect the required function while testing the evidence behind the claim.</p>
+            <ol class="method-steps">
+              ${[
+                ["01", "Frame the situation", "Start with the operational need and the decision boundary."],
+                ["02", "Interrogate the evidence", "Test baselines, data quality, lifecycle effects and uncertainty."],
+                ["03", "Make the call", "Select the response that is most defensible—not merely ambitious."],
+                ["04", "Use the diagnosis", "Receive feedback and a six-area learning plan linked to Foundations."]
+              ].map(([number, title, text]) => `<li><span>${number}</span><div><h3>${title}</h3><p>${text}</p></div></li>`).join("")}
+            </ol>
+          </div>
+
+          <aside class="profile-preview" aria-label="Preview of the final diagnostic profile">
+            <div class="profile-preview-head"><div><span>Diagnostic output</span><strong>Your decision profile</strong></div><b>6 areas</b></div>
+            <div class="profile-bars">
+              ${DATA.areas.map((area, index) => `<div style="--area:${esc(area.colour)};--preview:${[86,72,64,81,58,69][index]}%"><span>${esc(area.short)}</span><i><b></b></i><strong>${[86,72,64,81,58,69][index]}</strong></div>`).join("")}
+            </div>
+            <div class="profile-note"><span>What you receive</span><p>Reasoned feedback after every answer, performance by area and three focused recommendations for what to learn next.</p></div>
+            <button class="btn btn-primary" type="button" data-action="start">Start the knowledge check <span>→</span></button>
+            <small>No sign-in · Progress remains in this browser</small>
           </aside>
-        </div>
-      </section>
-
-      <section class="home-section light">
-        <div class="shell">
-          <div class="section-head">
-            <div><div class="eyebrow">Balanced by design</div><h2>Six areas that shape better decisions.</h2></div>
-            <p>Every attempt covers the complete system. Questions change between attempts, but the diagnostic remains balanced across all six areas.</p>
-          </div>
-          <div class="area-grid">${homeAreaCards()}</div>
-        </div>
-      </section>
-
-      <section class="method-strip">
-        <div class="shell">
-          <div class="section-head">
-            <div><div class="eyebrow">Not a memory test</div><h2>Read. Decide. Learn. Transfer.</h2></div>
-            <p>Each answer is followed by a reasoning lens. Your final learning plan links directly to the relevant Foundations modules.</p>
-          </div>
-          <div class="method-grid">
-            ${[
-              ["01", "Read the situation", "Use operational context, not environmental slogans."],
-              ["02", "Make the call", "Choose, select several controls or build the right sequence."],
-              ["03", "Interrogate the feedback", "See why the evidence supports one response more strongly."],
-              ["04", "Take the next step", "Download a personal learning plan and continue in Foundations."]
-            ].map(([number, title, text]) => `<article class="method-step"><span>${number}</span><div><h3>${title}</h3><p>${text}</p></div></article>`).join("")}
-          </div>
         </div>
       </section>`;
     setPage("Home", "home");
@@ -378,9 +378,13 @@
           <div class="score-live"><strong>${completedCount ? `${liveAccuracy()}%` : "—"}</strong><span>live score</span></div>
         </div>
         <div class="question-stage">
-          <aside class="question-visual">
-            <img src="${esc(area.image)}" alt="">
-            <div class="visual-copy"><div class="visual-index">Area ${esc(area.code)} · ${esc(question.difficulty)}</div><h2>${esc(area.title)}</h2><p>${esc(area.description)}</p></div>
+          <aside class="question-card-label">
+            <img class="question-card-art" src="assets/hero-evidence-dossier-v4.jpg" alt="">
+            <div class="question-card-overlay" aria-hidden="true"></div>
+            <div class="question-card-kicker">Evidence review <strong>${String(state.index + 1).padStart(2, "0")} / ${state.selectedIds.length}</strong></div>
+            <div class="question-card-code"><span>Area</span><strong>${esc(area.code)}</strong></div>
+            <div class="visual-copy"><div class="visual-index">${esc(question.difficulty)} · assessment area</div><h2>${esc(area.title)}</h2><p>${esc(area.description)}</p></div>
+            <div class="question-card-cue"><span>Context</span><span>Evidence</span><span>Decision</span></div>
           </aside>
           <article class="question-panel">
             <div class="question-meta"><span class="question-tag type">${esc(typeLabel(question))}</span><span class="question-tag">${esc(question.difficulty)}</span><span class="question-tag">Balanced diagnostic</span></div>
@@ -493,7 +497,7 @@
       <section class="results-page"><div class="shell">
         <div class="results-hero">
           <div><div class="eyebrow light">Knowledge check complete</div><h1>${esc(level.title)}</h1><p>${esc(level.text)}</p><div class="meta-row"><span class="meta-chip">18 questions</span><span class="meta-chip">6 areas assessed</span><span class="meta-chip">Personal learning plan ready</span></div></div>
-          <div class="score-ring" style="--score:${result.overall}" aria-label="Overall score ${result.overall} percent"><div class="score-ring-inner"><strong>${result.overall}%</strong><span>overall score</span></div></div>
+          <div class="score-ticket" aria-label="Overall score ${result.overall} percent"><span>Overall result</span><strong>${result.overall}</strong><small>/ 100</small></div>
         </div>
 
         <div class="results-grid">
