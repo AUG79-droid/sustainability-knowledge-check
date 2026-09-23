@@ -7,6 +7,7 @@ try{localStorage.setItem("skc-language",lang)}catch(e){}
 document.documentElement.lang=lang;
 const exact=new Map([...(window.SKC_ES_1||[]),...(window.SKC_ES_2||[]),...(window.SKC_ES_3||[]),...(window.SKC_ES_4||[]),...(window.SKC_ES_5||[])]);
 function tr(v){if(lang!=="es"||typeof v!=="string")return v;const t=v.trim();if(exact.has(t))return v.replace(t,exact.get(t));let o=v;
+o=o.replace(/^Resume question (\d+)$/,(m,a)=>"Continuar en la pregunta "+a);
 o=o.replace(/^(\d+) of (\d+) selected$/,(m,a,b)=>a+" de "+b+" seleccionadas");
 o=o.replace(/^(\d+) of (\d+) ordered$/,(m,a,b)=>a+" de "+b+" ordenados");
 o=o.replace(/^Priority (\d+)$/,(m,a)=>"Prioridad "+a);
