@@ -1,6 +1,8 @@
 (() => {
   "use strict";
 
+  const I18N = window.SKC_I18N;
+  const t = I18N.translate;
   const DATA = window.SKC_DATA;
   const STORE_KEY = "sustainability-knowledge-check-v1";
   const app = document.querySelector("#app");
@@ -58,14 +60,14 @@
   }
 
   function showToast(message) {
-    toast.textContent = message;
+    toast.textContent = t(message);
     toast.classList.add("show");
     clearTimeout(showToast.timer);
     showToast.timer = setTimeout(() => toast.classList.remove("show"), 2800);
   }
 
   function setPage(title, activeNav = null, resetScroll = true) {
-    document.title = title ? `${title} · ${DATA.meta.title}` : DATA.meta.title;
+    document.title = title ? `${t(title)} · ${DATA.meta.title}` : DATA.meta.title;
     document.body.dataset.view = activeNav || (title === "Results" ? "results" : "assessment");
     document.querySelectorAll("[data-nav]").forEach((link) => {
       const active = link.dataset.nav === activeNav;
@@ -81,6 +83,11 @@
         requestAnimationFrame(() => window.scrollTo(0, 0));
       });
     }
+  }
+
+  function renderApp(markup) {
+    app.innerHTML = markup;
+    I18N.localizeElement(app);
   }
 
   function selectAttemptQuestions() {
@@ -145,7 +152,7 @@
   function renderHome() {
     const inProgress = state.selectedIds.length === 18 && !state.finished && Object.keys(state.answers).length < 18;
     const completed = state.lastResult;
-    app.innerHTML = `
+    renderApp(`
       <section class="review-home">
         <div class="review-frame shell">
           <div class="review-context-row">
@@ -156,8 +163,8 @@
           <div class="review-hero">
             <div class="review-copy">
               <div class="eyebrow">Sustainability knowledge check</div>
-              <h1>Good decisions need more than <em>good intentions.</em></h1>
-              <p>Work through 18 realistic choices. Examine the evidence, lifecycle trade-offs and operational constraints—then discover where your reasoning is strongest.</p>
+              <h1>How much do you really know about <em>sustainability?</em></h1>
+              <p>Test your knowledge, discover your strengths and identify where you can keep learning.</p>
               <div class="button-row review-actions">
                 ${inProgress ? `<button class="btn btn-primary" type="button" data-action="resume">Resume question ${state.index + 1} <span>→</span></button><button class="btn btn-quiet" type="button" data-action="restart">Start again</button>` : `<button class="btn btn-primary" type="button" data-action="start">Begin the review <span>→</span></button><a class="btn btn-quiet" href="#about">How it works</a>`}
                 ${completed ? `<button class="btn btn-quiet" type="button" data-action="last-results">Last result · ${completed.overall}%</button>` : ""}
@@ -210,12 +217,12 @@
             <small>No sign-in · Progress remains in this browser</small>
           </aside>
         </div>
-      </section>`;
+      </section>`);
     setPage("Home", "home");
   }
 
   function renderAbout() {
-    app.innerHTML = `
+    renderApp(`
       <section class="page-hero compact"><div class="shell"><div class="eyebrow">How it works</div><h1>A diagnostic, not a certification.</h1><p>The experience is designed to reveal how a person reasons through environmental evidence and operational trade-offs. It does not certify competence or replace any controlled Airbus process.</p></div></section>
       <section class="shell content-panel">
         <div class="about-grid">
@@ -225,18 +232,18 @@
           <article class="about-card"><h2>What happens to your data</h2><p>Nothing is submitted. The current attempt and latest result are stored only in this browser so you can resume. The downloadable plan is created locally on your device.</p></article>
         </div>
         <div class="button-row" style="margin-top:24px"><button class="btn btn-dark" type="button" data-action="start">Start knowledge check →</button><a class="btn btn-outline" href="#sources">Review evidence base</a></div>
-      </section>`;
+      </section>`);
     setPage("How it works", "about");
   }
 
   function renderSources() {
-    app.innerHTML = `
+    renderApp(`
       <section class="page-hero compact"><div class="shell"><div class="eyebrow">Evidence base</div><h1>Public sources behind the reasoning.</h1><p>The questions use public primary or official sources. Internal approved documentation remains authoritative for Airbus work, and current legal or substance status must always be checked through approved processes.</p></div></section>
       <section class="shell content-panel">
         <div class="source-grid">
           ${Object.values(DATA.sources).map((source) => `<article class="source-card"><span>${esc(source.organisation)}</span><h2>${esc(source.title)}</h2><a href="${esc(source.url)}" target="_blank" rel="noopener noreferrer">Open official source ↗</a></article>`).join("")}
         </div>
-      </section>`;
+      </section>`);
     setPage("Evidence base", "sources");
   }
 
@@ -370,7 +377,7 @@
     const completedCount = answeredItems().length;
     const progress = Math.round(completedCount / state.selectedIds.length * 100);
 
-    app.innerHTML = `
+    renderApp(`
       <section class="assessment-page" style="--area:${esc(area.colour)}">
         <div class="assessment-topbar">
           <div class="assessment-count"><strong>Question ${state.index + 1} of ${state.selectedIds.length}</strong><span>${esc(area.short)}</span></div>
@@ -395,7 +402,7 @@
             ${isFeedback ? feedbackMarkup(question, answered) : `<div class="question-actions"><span class="selection-status">${esc(selectionStatus(question))}</span><div class="button-row">${question.type === "sequence" && responseArray().length ? `<button class="btn btn-outline" type="button" data-action="sequence-reset">Reset order</button>` : ""}<button class="btn btn-dark" type="button" data-action="submit" ${isValidResponse(question) ? "" : "disabled"}>Submit answer</button></div></div>`}
           </article>
         </div>
-      </section>`;
+      </section>`);
     setPage(`Question ${state.index + 1}`, null, !preserveScroll);
     if (preserveScroll) requestAnimationFrame(() => window.scrollTo(0, previousScroll));
   }
@@ -493,7 +500,7 @@
     const level = resultLevel(result.overall);
     const sorted = [...result.areaResults].sort((a, b) => a.score - b.score);
     const recommendations = sorted.slice(0, 3);
-    app.innerHTML = `
+    renderApp(`
       <section class="results-page"><div class="shell">
         <div class="results-hero">
           <div><div class="eyebrow light">Knowledge check complete</div><h1>${esc(level.title)}</h1><p>${esc(level.text)}</p><div class="meta-row"><span class="meta-chip">18 questions</span><span class="meta-chip">6 areas assessed</span><span class="meta-chip">Personal learning plan ready</span></div></div>
@@ -519,7 +526,7 @@
         </div>
 
         <div class="results-actions"><p>Downloadable results are generated locally and contain no personal identifiers.</p><div class="button-row"><button class="btn btn-primary" type="button" data-action="download">Download my learning plan</button><button class="btn btn-secondary" type="button" data-action="restart">Retake with new questions</button><a class="btn btn-secondary" href="#sources">Review evidence base</a></div></div>
-      </div></section>`;
+      </div></section>`);
     setPage("Results", null);
   }
 
@@ -530,16 +537,16 @@
     const sorted = [...result.areaResults].sort((a, b) => a.score - b.score);
     const lines = [
       DATA.meta.title,
-      `${DATA.meta.context} context`,
-      `Completed: ${new Date(result.completedAt).toLocaleString("en-GB")}`,
+      t(`${DATA.meta.context} context`),
+      t(`Completed: ${new Date(result.completedAt).toLocaleString(I18N.language === "es" ? "es-ES" : "en-GB")}`),
       "",
-      `OVERALL RESULT: ${result.overall}% · ${level.title}`,
+      `${t("OVERALL RESULT")}: ${result.overall}% · ${t(level.title)}`,
       level.text,
       "",
-      "PERFORMANCE BY AREA",
+      t("PERFORMANCE BY AREA"),
       ...result.areaResults.map((item) => `${areaById[item.areaId].title}: ${item.score}%`),
       "",
-      "PERSONAL LEARNING PRIORITIES",
+      t("PERSONAL LEARNING PRIORITIES"),
       ...sorted.slice(0, 3).flatMap((item, index) => {
         const area = areaById[item.areaId];
         return [
@@ -549,9 +556,9 @@
           ""
         ];
       }),
-      "EDUCATIONAL NOTICE",
-      "This exploratory result is not a certification of competence. It does not replace controlled policies, procedures, legal advice, technical authorisation, targets or corporate positions.",
-      `Evidence reviewed: ${DATA.meta.reviewed}`
+      t("EDUCATIONAL NOTICE"),
+      t("This exploratory result is not a certification of competence. It does not replace controlled policies, procedures, legal advice, technical authorisation, targets or corporate positions."),
+      t(`Evidence reviewed: ${DATA.meta.reviewed}`)
     ];
     const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8" });
     const url = URL.createObjectURL(blob);
