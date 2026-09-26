@@ -1,1 +1,54 @@
-x
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#efe9df" />
+  <title>Sustainability Knowledge Check</title>
+  <meta
+    name="description"
+    content="A practical sustainability knowledge check for aerospace teams. Test your reasoning across lifecycle, circularity, materials, maintenance, suppliers, and evidence."
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="site-shell">
+    <header class="site-header" aria-label="Primary navigation">
+      <a class="brand" href="#" aria-label="Sustainability Knowledge Check home">
+        <span class="brand-mark" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </span>
+        <span class="brand-copy">
+          <span class="brand-eyebrow">Evidence Review</span>
+          <strong>Sustainability Knowledge Check</strong>
+        </span>
+      </a>
+      <div class="header-actions">
+        <span class="status-chip" id="sessionStatus">Private browser session</span>
+        <button class="ghost-button" id="resetButton" type="button">Reset</button>
+      </div>
+    </header>
+
+    <main id="app" class="app" tabindex="-1"></main>
+  </div>
+
+  <noscript>
+    <div class="noscript">This knowledge check requires JavaScript to run.</div>
+  </noscript>
+
+  <script src="data.js"></script>
+  <script src="translations-es-01.js"></script>
+  <script src="translations-es-02.js"></script>
+  <script src="translations-es-03.js"></script>
+  <script src="translations-es-04.js"></script>
+  <script src="translations-es-05.js"></script>
+  <script src="localization.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
